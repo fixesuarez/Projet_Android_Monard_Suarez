@@ -34,10 +34,34 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnItemClickListener {
+
+    @Override
+    public void onItemClick(View view, int position) {
+        Intent intent = new Intent(this, MotherDetailsActivity.class);
+        String profileUrl = null;
+        try {
+            profileUrl = getMothers().getJSONObject(position).getJSONObject("picture").getString("large");
+
+        String motherName = getMothers().getJSONObject(position).getJSONObject("name").getString("first");
+        motherName = motherName.substring(0,1).toUpperCase() + motherName.substring(1).toLowerCase();
+        String motherCity = getMothers().getJSONObject(position).getJSONObject("location").getString("city");
+        motherCity = motherCity.toUpperCase();
+        String phoneMother = getMothers().getJSONObject(position).getString("phone");
+        intent.putExtra("IMAGE_URL", profileUrl);
+        intent.putExtra("MOTHER_NAME", motherName);
+        intent.putExtra("MOTHER_ADDRESS", motherCity);
+        intent.putExtra("PHONE_MOTHER", phoneMother);
+
+        startActivity(intent);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     public static final String MOTHERS_UPDATE = "org.esiea.suarez.monard.meetamother";
-    public JSONArray mothers;
     private RecyclerView recyclerView;
     private NotificationCompat.Builder builder;
     private NotificationManager notificationManager;
@@ -50,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final Intent intent = new Intent(this, MotherDetailsActivity.class);
+
 
         MotherService.startActionGetAllMothers(this);
         IntentFilter intentFilter = new IntentFilter(MOTHERS_UPDATE);
@@ -81,31 +105,11 @@ public class MainActivity extends AppCompatActivity {
 
         this.recyclerView = (RecyclerView) findViewById(R.id.rv_mothers);
         this.recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        this.recyclerView.setAdapter(new MothersAdapter(getMothersFromFile()));
-        this.recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, this.recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                try {
-                    String profileUrl = mothers.getJSONObject(position).getJSONObject("picture").getString("large");
-                    String motherName = mothers.getJSONObject(position).getJSONObject("name").getString("first");
-                    motherName = motherName.substring(0,1).toUpperCase() + motherName.substring(1).toLowerCase();
-                    String motherCity = mothers.getJSONObject(position).getJSONObject("location").getString("city");
-                    motherCity = motherCity.toUpperCase();
-                    String phoneMother = mothers.getJSONObject(position).getString("phone");
-                    intent.putExtra("IMAGE_URL", profileUrl);
-                    intent.putExtra("MOTHER_NAME", motherName);
-                    intent.putExtra("MOTHER_ADDRESS", motherCity);
-                    intent.putExtra("PHONE_MOTHER", phoneMother);
+        this.recyclerView.setAdapter(new MothersAdapter(getMothersFromFile(), this));
+    }
 
-                    startActivity(intent);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-            @Override
-            public void onItemLongClick(View view, int position) {
-            }
-        }));
+    private JSONArray getMothers(){
+        return ((MothersAdapter)recyclerView.getAdapter()).mothers;
     }
 
     @Override
@@ -138,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d("About to be updated", getIntent().getAction());
-            mothers = getMothersFromFile();
+            ((MothersAdapter)recyclerView.getAdapter()).setNewMother(getMothersFromFile());
         }
     }
 
@@ -161,9 +165,11 @@ public class MainActivity extends AppCompatActivity {
 
     private class MothersAdapter extends RecyclerView.Adapter<MothersAdapter.MothersHolder> {
         JSONArray mothers;
+        OnItemClickListener listener;
 
-        public MothersAdapter(JSONArray data) {
+        public MothersAdapter(JSONArray data, OnItemClickListener listener) {
             this.mothers = data;
+            this.listener = listener;
         }
 
         @Override
@@ -174,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
             return motherHolder;
         }
         @Override
-        public void onBindViewHolder(MothersHolder holder, int position) {
+        public void onBindViewHolder(MothersHolder holder, final int position) {
             try {
                 String profileUrl = mothers.getJSONObject(position).getJSONObject("picture").getString("large");
                 String motherName = mothers.getJSONObject(position).getJSONObject("name").getString("first");
@@ -189,6 +195,13 @@ public class MainActivity extends AppCompatActivity {
                 Glide.with(holder.itemView.getContext())
                         .load(profileUrl)
                         .into(holder.iv_profilePicture);
+
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        listener.onItemClick(view, position);
+                    }
+                });
             } catch (JSONException e) {
                 e.printStackTrace();
             }
