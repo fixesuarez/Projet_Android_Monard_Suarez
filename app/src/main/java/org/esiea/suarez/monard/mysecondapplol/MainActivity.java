@@ -91,9 +91,10 @@ public class MainActivity extends AppCompatActivity {
             try {
                 String profileUrl = mothers.getJSONObject(position).getJSONObject("picture").getString("large");
                 String motherName = mothers.getJSONObject(position).getJSONObject("name").getString("first");
-                String motherAddress = mothers.getJSONObject(position).getJSONObject("location").getString("city");
+                String motherStreet = mothers.getJSONObject(position).getJSONObject("location").getString("street");
+                String motherCity = mothers.getJSONObject(position).getJSONObject("location").getString("city");
                 holder.tv_name.setText(motherName);
-                holder.tv_adress.setText(motherAddress);
+                holder.tv_adress.setText(motherStreet + ", " + motherCity);
 
                 Glide.with(holder.itemView.getContext())
                         .load(profileUrl)
