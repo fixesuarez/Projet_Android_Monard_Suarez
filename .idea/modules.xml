@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/MySecondAppLol.iml" filepath="$PROJECT_DIR$/MySecondAppLol.iml" />
+      <module fileurl="file://C:\Users\franc\Documents\IN'TECH\S7\Mobile\TP\Projet_Android_Suarez_Monard\MySecondAppLol.iml" filepath="C:\Users\franc\Documents\IN'TECH\S7\Mobile\TP\Projet_Android_Suarez_Monard\MySecondAppLol.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Projet_Android_Suarez_Monard.iml" filepath="$PROJECT_DIR$/Projet_Android_Suarez_Monard.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
