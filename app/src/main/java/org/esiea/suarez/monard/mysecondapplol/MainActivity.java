@@ -1,9 +1,11 @@
 package org.esiea.suarez.monard.mysecondapplol;
 
+import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.app.NotificationCompat;
@@ -59,8 +61,6 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         }
     }
 
-
-
     public static final String MOTHERS_UPDATE = "org.esiea.suarez.monard.meetamother";
     private RecyclerView recyclerView;
     private NotificationCompat.Builder builder;
@@ -73,8 +73,6 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
 
         MotherService.startActionGetAllMothers(this);
         IntentFilter intentFilter = new IntentFilter(MOTHERS_UPDATE);
@@ -128,12 +126,12 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_bar_button:
-                // User chose the "Settings" item, show the app settings UI...
-                startActivity(new Intent(this, Informations.class));
                 Toast.makeText(getApplicationContext(),getString(R.string.toast), Toast.LENGTH_LONG).show();
-                return true;
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(R.string.dialog_title);
+                builder.setMessage(R.string.dialog_message);
+                builder.show();
         }
-
         return super.onOptionsItemSelected(item);
     }
 

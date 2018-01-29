@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">Meet a Mother</string>
+    <string name="toast">I am a toast !</string>
     <string name="button_text">Click</string>
-    <string name="toast">Je suis un toast !</string>
-    <string name="channel_name">Channel</string>
+
+    <string name="field_name">Name :</string>
+    <string name="field_phone">Phone :</string>
+    <string name="field_address">Address :</string>
+
+    <string name="dialog_understood">Understood !</string>
+    <string name="dialog_title">Informations</string>
+    <string name="dialog_message">All those moms are ready to see you but deserve respect ! If you call them, remember to stay gentle.</string>
 </resources>

@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">Rencontre une daronne</string>
+    <string name="toast">Ces mamans sont totalement fictives. Toute ressemblance avec une personne existant réellement serait totalement fortuite.</string>
     <string name="button_text">Click</string>
-    <string name="toast">Je suis un toast !</string>
-    <string name="channel_name">Channel</string>
+
+    <string name="field_name">Nom :</string>
+    <string name="field_phone">Téléphone :</string>
+    <string name="field_address">Adresse :</string>
+
+    <string name="dialog_understood">Compris !</string>
+    <string name="dialog_title">Informations</string>
+    <string name="dialog_message">Toutes ces daronnes sont prêtes à vous voir mais méritent le respect ! Si vous les appelez nous vous prions de rester courtois.</string>
 </resources>
