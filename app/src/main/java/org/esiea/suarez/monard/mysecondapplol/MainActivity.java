@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                 PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notification_intent, 0);
 
                 builder = new NotificationCompat.Builder(context);
-                builder.setSmallIcon(R.drawable.ic_launcher_background).setAutoCancel(true).setCustomContentView(remoteViews).setContentIntent(pendingIntent);
+                builder.setSmallIcon(R.drawable.ic_pregnant_woman_black_24dp).setAutoCancel(true).setCustomContentView(remoteViews).setContentIntent(pendingIntent);
                 notificationManager.notify(notification_id, builder.build());
             };
         });

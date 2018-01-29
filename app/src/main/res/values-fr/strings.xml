@@ -10,4 +10,8 @@
     <string name="dialog_understood">Compris !</string>
     <string name="dialog_title">Informations</string>
     <string name="dialog_message">Toutes ces daronnes sont prêtes à vous voir mais méritent le respect ! Si vous les appelez nous vous prions de rester courtois.</string>
+
+    <string name="notif">Venez-voir nos toutes nouvelles daronnes !</string>
+
+    <string name="call">Appelle moi</string>
 </resources>

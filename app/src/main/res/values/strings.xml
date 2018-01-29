@@ -10,4 +10,8 @@
     <string name="dialog_understood">Understood !</string>
     <string name="dialog_title">Informations</string>
     <string name="dialog_message">All those moms are ready to see you but deserve respect ! If you call them, remember to stay gentle.</string>
+
+    <string name="notif">Find out our new mamas !</string>
+
+    <string name="call">Call me</string>
 </resources>
