@@ -18,6 +18,14 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".Informations"></activity>
+
+        <receiver android:name="Button_listener">
+            <intent-filter>
+                <action android:name="button_clicked"/>
+            </intent-filter>
+        </receiver>
+
         <service
             android:name=".MotherService"
             android:exported="false"></service>
