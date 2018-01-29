@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        final Intent intent = new Intent(this, MotherDetailsActivity.class);
+
         MotherService.startActionGetAllMothers(this);
         IntentFilter intentFilter = new IntentFilter(MOTHERS_UPDATE);
         LocalBroadcastManager.getInstance(this).registerReceiver(new MothersUpdate(), intentFilter);
@@ -44,6 +46,31 @@ public class MainActivity extends AppCompatActivity {
         this.recyclerView = (RecyclerView) findViewById(R.id.rv_mothers);
         this.recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         this.recyclerView.setAdapter(new MothersAdapter(getMothersFromFile()));
+        this.recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, this.recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                try {
+                    String profileUrl = mothers.getJSONObject(position).getJSONObject("picture").getString("large");
+                    String motherName = mothers.getJSONObject(position).getJSONObject("name").getString("first");
+                    motherName = motherName.substring(0,1).toUpperCase() + motherName.substring(1).toLowerCase();
+                    String motherCity = mothers.getJSONObject(position).getJSONObject("location").getString("city");
+                    motherCity = motherCity.toUpperCase();
+                    String phoneMother = mothers.getJSONObject(position).getString("phone");
+                    intent.putExtra("IMAGE_URL", profileUrl);
+                    intent.putExtra("MOTHER_NAME", motherName);
+                    intent.putExtra("MOTHER_ADDRESS", motherCity);
+                    intent.putExtra("PHONE_MOTHER", phoneMother);
+
+                    startActivity(intent);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+            }
+        }));
     }
 
     public class MothersUpdate extends BroadcastReceiver {
@@ -91,10 +118,13 @@ public class MainActivity extends AppCompatActivity {
             try {
                 String profileUrl = mothers.getJSONObject(position).getJSONObject("picture").getString("large");
                 String motherName = mothers.getJSONObject(position).getJSONObject("name").getString("first");
-                String motherStreet = mothers.getJSONObject(position).getJSONObject("location").getString("street");
+                motherName = motherName.substring(0,1).toUpperCase() + motherName.substring(1).toLowerCase();
                 String motherCity = mothers.getJSONObject(position).getJSONObject("location").getString("city");
+                motherCity = motherCity.toUpperCase();
+                String phoneMother = mothers.getJSONObject(position).getString("phone");
                 holder.tv_name.setText(motherName);
-                holder.tv_adress.setText(motherStreet + ", " + motherCity);
+                holder.tv_address.setText(motherCity);
+                holder.tv_phone.setText(phoneMother);
 
                 Glide.with(holder.itemView.getContext())
                         .load(profileUrl)
@@ -117,13 +147,15 @@ public class MainActivity extends AppCompatActivity {
 
             ImageView iv_profilePicture;
             TextView tv_name;
-            TextView tv_adress;
+            TextView tv_address;
+            TextView tv_phone;
 
             public MothersHolder(View itemView) {
                 super(itemView);
                 this.iv_profilePicture = itemView.findViewById(R.id.profile_picture);
                 this.tv_name = itemView.findViewById(R.id.name);
-                this.tv_adress = itemView.findViewById(R.id.address);
+                this.tv_address = itemView.findViewById(R.id.address);
+                this.tv_phone = itemView.findViewById(R.id.phone);
             }
         }
     }
