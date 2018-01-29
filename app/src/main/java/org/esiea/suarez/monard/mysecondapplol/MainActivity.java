@@ -56,6 +56,29 @@ public class MainActivity extends AppCompatActivity {
         IntentFilter intentFilter = new IntentFilter(MOTHERS_UPDATE);
         LocalBroadcastManager.getInstance(this).registerReceiver(new MothersUpdate(), intentFilter);
 
+        context = this;
+        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        remoteViews = new RemoteViews(getPackageName(), R.layout.notification_layout);
+
+        notification_id = (int) System.currentTimeMillis();
+        Intent button_intent = new Intent("button_clicked");
+        button_intent.putExtra("id", notification_id);
+
+        PendingIntent p_button_intent = PendingIntent.getBroadcast(context, 123, button_intent, 0);
+        remoteViews.setOnClickPendingIntent(R.id.notif_button, p_button_intent);
+
+        findViewById(R.id.notif_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
+                Intent notification_intent = new Intent(context, MainActivity.class);
+                PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notification_intent, 0);
+
+                builder = new NotificationCompat.Builder(context);
+                builder.setSmallIcon(R.drawable.ic_launcher_background).setAutoCancel(true).setCustomContentView(remoteViews).setContentIntent(pendingIntent);
+                notificationManager.notify(notification_id, builder.build());
+            };
+        });
+
         this.recyclerView = (RecyclerView) findViewById(R.id.rv_mothers);
         this.recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         this.recyclerView.setAdapter(new MothersAdapter(getMothersFromFile()));
@@ -79,34 +102,10 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-
-        context = this;
-        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        remoteViews = new RemoteViews(getPackageName(), R.layout.notification_layout);
-
-        notification_id = (int) System.currentTimeMillis();
-        Intent button_intent = new Intent("button_clicked");
-        button_intent.putExtra("id", notification_id);
-
-        PendingIntent p_button_intent = PendingIntent.getBroadcast(context, 123, button_intent, 0);
-        remoteViews.setOnClickPendingIntent(R.id.notif_button, p_button_intent);
-
-        findViewById(R.id.notif_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent notification_intent = new Intent(context, MainActivity.class);
-                PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notification_intent, 0);
-
-                builder = new NotificationCompat.Builder(context);
-                builder.setSmallIcon(R.drawable.ic_launcher_background).setAutoCancel(true).setCustomContentView(remoteViews).setContentIntent(pendingIntent);
-
             @Override
             public void onItemLongClick(View view, int position) {
             }
         }));
-                notificationManager.notify(notification_id, builder.build());
-            }
-        });
     }
 
     @Override
